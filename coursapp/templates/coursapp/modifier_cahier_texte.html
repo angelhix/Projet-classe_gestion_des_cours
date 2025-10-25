@@ -1,0 +1,38 @@
+{% extends 'coursapp/base.html' %}
+
+{% block title %}Cahier de texte - {{ seance.cours.titre }}{% endblock %}
+
+{% block content %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'liste_cours' %}">Cours</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'liste_seances' seance.cours.id %}">{{ seance.cours.titre }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Cahier de texte - {{ seance.date|date:"d/m/Y" }}</li>
+        </ol>
+    </nav>
+
+    <div class="card">
+        <div class="card-header">
+            <h1 class="h3 mb-0">Cahier de texte</h1>
+            <small class="text-muted">{{ seance.cours.titre }} - {{ seance.date|date:"l d F Y" }}</small>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    {{ form.contenu.label_tag }}
+                    {{ form.contenu }}
+                    {% if form.contenu.errors %}
+                        <div class="text-danger">
+                            {% for error in form.contenu.errors %}{{ error }}{% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="d-flex justify-content-between">
+                    <a href="{% url 'liste_seances' seance.cours.id %}" class="btn btn-secondary">⬅️ Retour aux séances</a>
+                    <button type="submit" class="btn btn-success">💾 Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
